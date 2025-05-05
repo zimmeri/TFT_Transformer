@@ -1,0 +1,63 @@
+There are three main folders in the next_best architecture
+    - model
+        - This folder holds all the notebooks and accompanying files to build the models for the next_best model 
+        - Files necessary for each notebook
+            - augments.csv
+                - list of all the augments in the set
+            - base_items.csv 
+                - list of all the base items in the set 
+            - full_items.csv 
+                - list of all the full items in the set 
+            - units.csv 
+                - list of all the units in the set 
+            - vocab.pkl
+                - dictionary of all possible tokens where key is name of token and value is id int 
+            - inv_vocab.pkl 
+                - dictionary of all possible tokens where key is id int and value is name of token 
+        - Notebooks - all notebooks are dependent on only files above
+            - MaskModel.ipynb
+                - trains for case where MASK is on the decision position and an action needs to be selected 
+            - AugmentModel.ipynb 
+                - trains for case where ACTION_AUGMENT is selected and MASK is on decision+4 position. Decision+1, decision+2, decision+3 are the offered augments 
+            - BuyModel.ipynb 
+                - trains for case where ACTION_BUY is selected and MASK is on decision+1 position. A unit from the shop needs to be selected 
+            - ItemModel1.ipynb 
+                - trains for case where ACTION_ITEM is selected and MASK is on decision+1 position. An item from the item bench needs to be selected 
+            - ItemModel2.ipynb 
+                - trains for case where ACTION_ITEM is selected and MASK is on decision+2 position. If decision+1 is a base_item, another base_item from the item bench needs to be selected. If decision+1 is a full_item, a unit from the board needs to be selected 
+            - ItemModel3.ipynb 
+                - trains for case where ACTION_ITEM is selected and MASK is on decision+3 position. A unit from the board needs to be selected 
+            - MoveModel1.ipynb 
+                - trains for case where ACTION_MOVE is selected and MASK is on decision+1 position. A unit from the bench needs to be selected 
+            - MoveModel2.ipynb
+                - trains for case where ACTION_MOVE is selected and MASK is on decision+2 posistion. A unit from the board needs to be selected 
+            - SellModel.ipynb 
+                - trains for case where ACTION_SELL is selected and MASK is on decision+1 position. A unit from the bench needs to be selected 
+            - TestModels.ipynb - reliant on all the model weights from the other notebooks 
+                - Assesses the accuracy of each model of whether they select a valid token or not 
+        - pth files - all the model weights from training
+            - mask_model.pth 
+            - augment_model.pth 
+            - buy_model.pth 
+            - item1_model.pth
+            - item2_model.pth 
+            - item3_model.pth
+            - move1_model.pth 
+            - move2_model.pth 
+            - sell_model.pth
+
+    - python_manager
+        - python app that connects the OverWolf overlay and the models 
+        - to run, activate the venv then run python server.py 
+        - single file server.py handles all the routes 
+
+    - sample-app-master
+        - javascript app that runs the OverWolf overlay to get real time game data 
+        - does not work unless you have a OverWolf Developer account 
+        - important files for the app  
+            - native\windows\second\second.html 
+                - display window for the overlay 
+                - has options to update in augment and item data since this data is not given through event updates 
+            - native\windows\second\second-controller.js
+                - makes calls to python server to update board state 
+                - receives info from python server and displays model decisions 

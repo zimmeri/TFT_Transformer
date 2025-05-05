@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../../css/general.css" />
+    <link rel="stylesheet" href="../../css/header.css" />
+    <link rel="stylesheet" href="../../css/ingame.css" />
+    <link rel="stylesheet" href="../../css/modal.css" />
+    <title>Overwolf Sample App - Second Screen window</title>
+    <style>
+      .dropdown-container {
+        position: relative;
+        width: 300px;
+      }
+  
+      input[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+      }
+  
+      .dropdown-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 200px;
+        border: 1px solid #ccc;
+        border-top: none;
+        overflow-y: auto;
+        background: white;
+        z-index: 1000;
+      }
+  
+      .dropdown-list div {
+        padding: 10px;
+        cursor: pointer;
+      }
+  
+      .dropdown-list div:hover {
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body class="second">
+    <!-- -------------------------------- Header ------------------------------- -->
+
+    <header class="app-header">
+      <img src="../../img/header_icon.svg" />
+      <h1>Sample App / second screen window</h1>
+      <div class="hotkey-text">
+        Show/Hide Hotkey:
+        <kbd id="hotkey-toggle"></kbd>
+      </div>
+      <div class="hotkey-text">
+        Toggle Second Screen Hotkey:
+        <kbd id="hotkey-second-screen"></kbd>
+      </div>
+      <div class="window-controls-group">
+        <button id="minimizeButton" class="window-control window-control-minimize" />
+        <button id="maximizeButton" class="window-control window-control-maximize" />
+        <button id="closeButton" class="window-control window-control-close" />
+      </div>
+    </header>
+
+    <!-- --------------------------------- Main -------------------------------- -->
+    <main>
+      <div id="logs" style="width: 800px;">
+        <div id="events" class="logColumn">
+          <h1>Game Events</h1>
+          <div id="eventsLog" class="dataText"></div>
+          <button id="copyEvents" class="logCopy">
+            COPY GAME EVENTS
+          </button>
+        </div>
+        <div id="infoUpdates" class="logColumn">
+          <h1>Info Updates</h1>
+          <div id="infoLog" class="dataText"></div>
+          <button id="copyInfo" class="logCopy">
+            COPY INFO UPDATES
+          </button>
+        </div>
+      </div>
+      <div id="other" style="width: 500px;">
+        <h1>Real-time Game Data</h1>
+        <h1>Select Your Items</h1>
+        <form id="itemForm">
+          <!-- 15 Searchable input boxes -->
+          <div style="margin: 4px" class="dropdown-container">
+            <input type="text" id="searchInput1" placeholder="ITEM_SLOT" />
+            <div id="dropdownList1" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px" class="dropdown-container">
+            <input type="text" id="searchInput2" placeholder="ITEM_SLOT" />
+            <div id="dropdownList2" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px" class="dropdown-container">
+            <input type="text" id="searchInput3" placeholder="ITEM_SLOT" />
+            <div id="dropdownList3" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px" class="dropdown-container">
+            <input type="text" id="searchInput4" placeholder="ITEM_SLOT" />
+            <div id="dropdownList4" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px" class="dropdown-container">
+            <input type="text" id="searchInput5" placeholder="ITEM_SLOT" />
+            <div id="dropdownList5" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px" class="dropdown-container">
+            <input type="text" id="searchInput6" placeholder="ITEM_SLOT" />
+            <div id="dropdownList6" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px" class="dropdown-container">
+            <input type="text" id="searchInput7" placeholder="ITEM_SLOT" />
+            <div id="dropdownList7" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px" class="dropdown-container">
+            <input type="text" id="searchInput8" placeholder="ITEM_SLOT" />
+            <div id="dropdownList8" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px" class="dropdown-container">
+            <input type="text" id="searchInput9" placeholder="ITEM_SLOT" />
+            <div id="dropdownList9" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px" class="dropdown-container">
+            <input type="text" id="searchInput10" placeholder="ITEM_SLOT" />
+            <div id="dropdownList10" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px" class="dropdown-container">
+            <input type="text" id="searchInput11" placeholder="ITEM_SLOT" />
+            <div id="dropdownList11" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px" class="dropdown-container">
+            <input type="text" id="searchInput12" placeholder="ITEM_SLOT" />
+            <div id="dropdownList12" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px"  class="dropdown-container">
+            <input type="text" id="searchInput13" placeholder="ITEM_SLOT" />
+            <div id="dropdownList13" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px"  class="dropdown-container">
+            <input type="text" id="searchInput14" placeholder="ITEM_SLOT" />
+            <div id="dropdownList14" class="dropdown-list"></div>
+          </div>
+          <div style="margin: 4px"  class="dropdown-container">
+            <input type="text" id="searchInput15" placeholder="ITEM_SLOT" />
+            <div id="dropdownList15" class="dropdown-list"></div>
+          </div>
+
+      <button style="margin: 5px"  type="button" onclick="sendItems()">SEND ITEMS</button>
+    </form>
+    <form id="AugmentForm">
+      <div style="margin: 5px"  class="dropdown-container">
+        <input type="text" id="AugmentInput1" placeholder="AUGMENT_SLOT" />
+        <div id="AugmentList1" class="dropdown-list"></div>
+      </div>
+      <div style="margin: 5px"  class="dropdown-container">
+        <input type="text" id="AugmentInput2" placeholder="AUGMENT_SLOT" />
+        <div id="AugmentList2" class="dropdown-list"></div>
+      </div>
+      <div style="margin: 5px" class="dropdown-container">
+        <input  type="text" id="AugmentInput3" placeholder="AUGMENT_SLOT" />
+        <div id="AugmentList3" class="dropdown-list"></div>
+      </div>
+      <button style="margin: 5px" type="button" onclick="sendAugment()">SEND AUGMENTS</button>
+    </form>
+    <button style="padding: 5px; margin: 5px" type="button" onclick="decide()">MAKE DECISION</button>
+  </div>
+ <script type="module" src="./second.js"></script>
+  <script>
+    const options = [
+    'Adaptive Helm', "Archangel's Staff", 'Bloodthirster', 'Blue Buff', 'Bramble Vest',
+    'Crownguard', 'Deathblade', "Dragon's Claw", 'Edge of Night', 'Evenshroud',
+    'Gargoyle Stoneplate', 'Giant Slayer', 'Guardbreaker', "Guinsoo's Rageblade",
+    'Hand Of Justice', 'Hextech Gunblade', 'Infinity Edge', 'Ionic Spark',
+    'Jeweled Gauntlet', 'Last Whisper', 'Morellonomicon', "Nashor's Tooth",
+    "Protector's Vow", 'Quicksilver', "Rabadon's Deathcap", 'Red Buff',
+    'Redemption', "Runaan's Hurricane", 'Spear of Shojin', 'Statikk Shiv',
+    'Steadfast Heart', "Sterak's Gage", 'Sunfire Cape', "Tactician's Cape",
+    "Tactician's Crown", "Tactician's Shield", "Thief's Gloves", "Titan's Resolve",
+    "Warmog's Armor", 'Anima Squad Emblem', 'Bastion Emblem', 'BoomBot Emblem',
+    'Bruiser Emblem', 'Divinicorp Emblem', 'Dynamo Emblem', 'Executioner Emblem',
+    'Exotech Emblem', 'Golden Ox Emblem', 'Marksman Emblem', 'Rapidfire Emblem',
+    'Slayer Emblem', 'Strategist Emblem', 'Street Demon Emblem', 'Syndicate Emblem',
+    'Techie Emblem', 'Vanguard Emblem', 'Absolution', 'Blessed Bloodthirster',
+    'Blue Blessing', 'Brink of Dawn', "Bulwark's Oath", 'Covalent Spark',
+    'Crest of Cinders', 'Demonslayer', "Dragon's Will", 'Dvarapala Stoneplate',
+    'Equinox', 'Eternal Whisper', 'Fist of Fairness', 'Glamorous Gauntlet',
+    "Guinsoo's Reckoning", 'Hextech Lifeblade', "Jak'sho the Protean",
+    'Legacy of the Colossus', 'Luminous Deathblade', 'More More-ellonomicon',
+    'Quickestsilver', "Rabadon's Ascended Deathcap", "Rascal's Gloves",
+    'Rosethorn Vest', 'Royal Crownshield', "Runaan's Tempest", 'Spear of Hirana',
+    "Statikk's Favor", "Sterak's Megashield", 'Sunlight Cape', "The Baron's Gift",
+    "Titan's Vow", "Urf-Angel's Staff", "Warmog's Pride", 'Willbreaker',
+    'Zenith Edge', 'Anima Visage', "Blacksmith's Gloves", 'Blighting Jewel',
+    "Death's Defiance", 'Deathfire Grasp', 'Fishbones', "Gambler's Blade",
+    'Gold Collector', 'Horizon Focus', 'Hullcrusher', 'Infinity Force',
+    'Innervating Locket', 'Lich Bane', 'Lightshield Crest', "Luden's Tempest",
+    'Manazane', 'Mittens', "Mogul's Mail", "Prowler's Claw", 'Rapid Firecannon',
+    "Seeker's Armguard", 'Silvermere Dawn', "Sniper's Focus", 'Spectral Cutlass',
+    'Suspicious Trench Coat', 'Talisman Of Ascension', "Trickster's Glass",
+    'Unending Despair', "Wit's End", "Zhonya's Paradox", "Accomplice's Gloves",
+    'Aegis of the Legion', "Banshee's Veil", 'Chalice of Power', "Knight's Vow",
+    'Locket of the Iron Solari', 'Moonstone Renewer', 'Needlessly Big Gem',
+    'Obsidian Cleaver', "Randuin's Omen", 'Shroud of Stillness', 'Spite',
+    'The Eternal Flame', 'Unstable Treasure Chest', 'Virtue of the Martyr',
+    "Zeke's Herald", 'Zephyr', "Zz'Rot Portal", 'B.F. Sword', 'Recurve Bow',
+    'Needlessly Large Rod', 'Tear of the Goddess', 'Chain Vest', 'Negatron Cloak',
+    "Giant's Belt", 'Sparring Gloves', 'Frying Pan', 'Spatula', 'ITEM_SLOT'
+    ];
+
+    const augments = ['AFK',
+ 'Adaptive Strikes',
+ 'Backup',
+ 'Band of Thieves I',
+ 'Big Friend I',
+ 'Blistering Strikes',
+ 'Branching Out',
+ 'Branching Out+',
+ 'Bulky Buddies I',
+ 'Button Mash',
+ 'Called Shot',
+ "Caretaker's Ally",
+ 'Cease and Desist',
+ 'Climb The Ladder I',
+ 'Component Buffet',
+ 'Corrosion',
+ 'Crafted Crafting',
+ 'Delayed Start',
+ 'Diversified Portfolio',
+ 'Diversified Portfolio+',
+ 'Dummify',
+ 'Eye For An Eye',
+ 'Eye For An Eye+',
+ 'Find Your Center',
+ 'Fine Vintage',
+ 'Firesale',
+ 'Glass Cannon I',
+ 'Good For Something I',
+ 'Healing Orbs I',
+ 'Health is Wealth I',
+ 'Iron Assets',
+ 'Item Collector I',
+ 'Item Grab Bag I',
+ 'Kingslayer',
+ 'Lategame Specialist',
+ 'Latent Forge',
+ 'Lineup',
+ 'Lunch Money',
+ 'Manaflow I',
+ 'Mentorship I',
+ 'Missed Connections',
+ 'One For All I',
+ 'One, Two, Five!',
+ 'Ones Twos Three',
+ 'Over Encumbered',
+ "Pandora's Bench",
+ "Pandora's Items",
+ 'Patience is a Virtue',
+ 'Placebo',
+ 'Placebo+',
+ 'Preparation I',
+ 'Pumping Up I',
+ 'Recombobulator',
+ 'Restart Mission',
+ 'Rigged Shop+',
+ 'Risky Moves',
+ 'Rolling For Days I',
+ 'Silver Spoon',
+ 'Spoils of War I',
+ 'Stand United I',
+ 'Support Mining',
+ 'Support Mining+',
+ 'Survivor',
+ 'Table Scraps',
+ 'Team Building',
+ 'Teaming Up I',
+ 'Titanic Titan',
+ 'Wolf Unchained',
+ 'Young and Wild and Free',
+ '10,000 IQ',
+ 'A Magic Roll',
+ 'All That Shimmers',
+ 'All That Shimmers+',
+ 'Alter Ego',
+ 'Anima Squad Crest',
+ 'Ascension',
+ 'BRB',
+ 'Bad Luck Protection',
+ 'Bastion Crest',
+ 'Big Friend II',
+ 'Big Grab Bag',
+ 'Blazing Soul I',
+ 'Board of Directors',
+ 'BoomBot Crest',
+ 'Bronze For Life I',
+ 'Bruiser Crest',
+ 'Bulky Buddies II',
+ 'Calculated Loss',
+ 'Capacitor',
+ "Caretaker's Favor",
+ 'Category Five',
+ 'Clear Mind',
+ 'Climb The Ladder II',
+ 'Clockwork Accelerator',
+ 'Cloning Facility',
+ 'Cluttered Mind',
+ 'Cognitive Implant',
+ 'Cooking Pot',
+ 'Cower, Weaklings!',
+ 'Crown Guarded',
+ "Crown's Will",
+ 'Cutpurse',
+ 'Cyberdeck',
+ 'Cybernetic Bulk II',
+ 'Cybernetic Implants II',
+ 'Cybernetic Uplink II',
+ 'Divine Ascension',
+ 'Divinicorp Crest',
+ 'Dummy With A Gun',
+ 'Duo Queue',
+ 'Dynamo Crest',
+ 'Epoch',
+ 'Epoch+',
+ 'Executioner Crest',
+ 'Exotech Crest',
+ 'Flatline',
+ 'Forward Thinking',
+ 'Freestyling',
+ 'Glass Cannon II',
+ 'Gold For Dummies',
+ 'Golden Fleece',
+ 'Golden Fleece+',
+ 'Golden Ox Crest',
+ 'Golemify',
+ 'Healing Orbs II',
+ 'Health is Wealth II',
+ 'Heroic Grab Bag',
+ 'Heroic Grab Bag+',
+ 'Heroic Grab Bag++',
+ 'High Voltage',
+ 'Hostile Takeover',
+ 'Hunter Killer Missile',
+ 'Hustler',
+ 'Inspiring Epitaph',
+ 'Investment Strategy I',
+ 'Item Collector II',
+ 'Keep Your Friends Close',
+ 'Last Stand',
+ 'Lethal Rerouting',
+ 'Liquidate',
+ 'Little Buddies',
+ 'Long Distance Pals',
+ "Mace's Will",
+ 'Malicious Monetization',
+ 'Manaflow II',
+ 'Marksman Crest',
+ 'Memory Bank',
+ 'Mentorship II',
+ 'Moonlight',
+ 'NO SCOUT NO PIVOT',
+ 'New High Score',
+ 'Noble Sacrifice',
+ 'Not Today',
+ 'One For All II',
+ 'Overclocked',
+ 'Overheal',
+ 'Pair of Fours',
+ "Pandora's Items II",
+ 'Patient Study',
+ 'Piercing Lotus I',
+ 'Pilfer',
+ 'Polished Chrome',
+ 'Portable Forge',
+ 'Power Leveling',
+ 'Preparation II',
+ 'Prizefighter',
+ 'Pumping Up II',
+ 'Pyromaniac',
+ 'Raining Gold',
+ 'Raining Gold+',
+ 'Rapidfire Crest',
+ 'Reactive Shell',
+ 'ReinFOURcement',
+ 'Reinforcing Skeleture',
+ 'Replication',
+ 'Salvage Bin',
+ 'Salvage Bin',
+ 'Salvage Bin+',
+ 'Sated Spellweaver',
+ 'Scapegoat',
+ 'Scavenger',
+ 'Scoreboard Scrapper',
+ 'Shop Glitch',
+ "Slammin'",
+ "Slammin'+",
+ 'Slayer Crest',
+ 'Spare Parts',
+ "Spear's Will",
+ 'Speed Kills',
+ 'Spirit Link',
+ 'Spoils of War II',
+ 'Starry Night',
+ 'Starry Night+',
+ 'Strategist Crest',
+ 'Support Cache',
+ 'Support Spire',
+ 'Syndicate Crest',
+ 'Tagging Spree',
+ 'Teaming Up II',
+ 'Techie Crest',
+ 'The Chug Bug',
+ 'The Chug Bug+',
+ 'Thorn-Plated Armor',
+ 'Tomb Raider I',
+ 'Tower Defense',
+ 'Trade Sector',
+ 'Trait Tracker',
+ 'Transference',
+ 'Transistor',
+ 'Trial Run',
+ 'Trifecta I',
+ 'Two Much Value',
+ 'Two Trick',
+ 'Vampiric Vitality',
+ 'Vanguard Crest',
+ 'Wandering Trainer I',
+ 'Warpath',
+ 'Worth the Wait',
+ 'An Exalted Adventure',
+ 'Anger Issues',
+ 'Anima Squad Circlet',
+ 'Anima Squad Crown',
+ 'Bastion Circlet',
+ 'Bastion Crown',
+ 'Belt Overflow',
+ 'Birthday Present',
+ 'Blazing Soul II',
+ 'Blinding Speed',
+ 'BoomBot Circlet',
+ 'BoomBot Crown',
+ 'Bronze For Life II',
+ 'Bruiser Circlet',
+ 'Bruiser Crown',
+ 'Build a Bud!',
+ 'Bulky Buddies III',
+ 'Buried Treasures III',
+ 'Calculated Enhancement',
+ 'Call to Chaos',
+ "Caretaker's Chosen",
+ 'Coronation',
+ 'Cybernetic Bulk III',
+ 'Cybernetic Implants III',
+ 'Cybernetic Uplink III',
+ 'Divinicorp Circlet',
+ 'Divinicorp Crown',
+ 'Dual Purpose',
+ 'Dynamo Circlet',
+ 'Dynamo Crown',
+ 'Executioner Circlet',
+ 'Executioner Crown',
+ 'Exotech Circlet',
+ 'Exotech Crown',
+ 'Expected Unexpectedness',
+ 'Final Ascension',
+ 'Final Polish',
+ 'Flexible',
+ 'Flurry of Blows',
+ 'Going Long',
+ 'Golden Ox Circlet',
+ 'Golden Ox Crown',
+ 'Greater Moonlight',
+ 'Hall of Mirrors',
+ 'Hard Commit',
+ 'Hedge Fund',
+ "I'm the Carry Now",
+ 'Immovable Object',
+ 'Invested+',
+ 'Invested++',
+ 'Investment Strategy II',
+ 'Level Up!',
+ 'Living Forge',
+ 'Lucky Gloves',
+ 'Lucky Gloves+',
+ 'Marksman Circlet',
+ 'Marksman Crown',
+ 'Max Cap',
+ 'One Buff, Two Buff',
+ "Pandora's Items III",
+ 'Phreaky Friday',
+ 'Phreaky Friday +',
+ 'Piercing Lotus II',
+ 'Prismatic Pipeline',
+ 'Prismatic Ticket',
+ 'Pumping Up III',
+ 'Quality Over Quantity',
+ 'Radiant Refactor',
+ 'Radiant Relics',
+ 'Rapidfire Circlet',
+ 'Rapidfire Crown',
+ 'Roll The Dice',
+ 'Shimmerscale Essence',
+ 'Shopping Spree',
+ 'Slayer Circlet',
+ 'Slayer Crown',
+ 'Spoils of War III',
+ 'Sponging',
+ 'Strategist Circlet',
+ 'Strategist Crown',
+ 'Street Demon Circlet',
+ 'Street Demon Crown',
+ 'Subscription Service',
+ 'Sword Overflow',
+ 'Syndicate Circlet',
+ 'Syndicate Crown',
+ "Tactician's Kitchen",
+ 'Techie Circlet',
+ 'Techie Crown',
+ 'Tiniest Titan',
+ 'Tiniest Titan+',
+ 'Tomb Raider II',
+ 'Trifecta II',
+ 'Upward Mobility',
+ 'Vanguard Circlet',
+ 'Vanguard Crown',
+ 'Void Swarm',
+ 'Void Swarm',
+ 'Wand Overflow',
+ 'Wandering Trainer II',
+ 'Worth the Wait II']
+
+
+    // Dynamic input fields and dropdown lists for each item input
+    for (let i = 1; i <= 15; i++) {
+      const searchInput = document.getElementById(`searchInput${i}`);
+      const dropdownList = document.getElementById(`dropdownList${i}`);
+
+      searchInput.addEventListener("input", () => filterOptions(searchInput, dropdownList, i));
+    }
+
+    for (let i = 1; i <= 3; i++) {
+      const searchInput = document.getElementById(`AugmentInput${i}`);
+      const dropdownList = document.getElementById(`AugmentList${i}`);
+
+      searchInput.addEventListener("input", () => filterAugmentOptions(searchInput, dropdownList, i));
+    }
+
+    // Filter the options for the dropdown
+    function filterOptions(searchInput, dropdownList, index) {
+      const query = searchInput.value.toLowerCase();
+      dropdownList.innerHTML = ""; // Clear previous options
+
+      const filtered = options.filter(item => item.toLowerCase().includes(query));
+      filtered.forEach(option => {
+        const div = document.createElement("div");
+        div.textContent = option;
+        div.onclick = () => {
+          searchInput.value = option;
+          dropdownList.innerHTML = ""; // Clear the dropdown
+        };
+        dropdownList.appendChild(div);
+      });
+
+      // Show the dropdown list when there are filtered options
+      dropdownList.style.display = filtered.length > 0 ? "block" : "none";
+    }
+
+    function filterAugmentOptions(searchInput, dropdownList, index) {
+      const query = searchInput.value.toLowerCase();
+      dropdownList.innerHTML = ""; // Clear previous options
+
+      const filtered = augments.filter(item => item.toLowerCase().includes(query));
+      filtered.forEach(option => {
+        const div = document.createElement("div");
+        div.textContent = option;
+        div.onclick = () => {
+          searchInput.value = option;
+          dropdownList.innerHTML = ""; // Clear the dropdown
+        };
+        dropdownList.appendChild(div);
+      });
+
+      // Show the dropdown list when there are filtered options
+      dropdownList.style.display = filtered.length > 0 ? "block" : "none";
+    }
+
+    function decide(){
+      fetch("http://localhost:5000/decide", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('eventsLog').innerText = data.data;
+      })
+      .catch(err => {
+      });
+    }
+    
+
+    // Send selected items to the server
+    function sendItems() {
+      const selectedItems = [document.getElementById("searchInput1").value, 
+      document.getElementById("searchInput2").value, 
+      document.getElementById("searchInput3").value, 
+      document.getElementById("searchInput4").value, 
+      document.getElementById("searchInput5").value, 
+      document.getElementById("searchInput6").value, 
+      document.getElementById("searchInput7").value, 
+      document.getElementById("searchInput8").value, 
+      document.getElementById("searchInput9").value, 
+      document.getElementById("searchInput10").value, 
+      document.getElementById("searchInput11").value, 
+      document.getElementById("searchInput12").value, 
+      document.getElementById("searchInput13").value, 
+      document.getElementById("searchInput14").value, 
+      document.getElementById("searchInput15").value, 
+      ];
+      
+
+      // Send POST request
+      fetch("http://localhost:5000/items", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ items: selectedItems })
+      })
+      .then(res => res.json())
+      .then(data => {
+      })
+      .catch(err => {
+      });
+    }
+
+      function sendAugment() {
+      const selectedAugments = [document.getElementById("AugmentInput1").value, 
+      document.getElementById("AugmentInput2").value, 
+      document.getElementById("AugmentInput3").value,
+      ];
+      
+
+      // Send POST request
+      fetch("http://localhost:5000/augments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ augments: selectedAugments })
+      })
+      .then(res => res.json())
+      .then(data => {
+      })
+      .catch(err => {
+      });
+      }
+  </script>
+  </body>
+</html>
