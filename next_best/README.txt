@@ -14,7 +14,7 @@ There are three main folders in the next_best architecture
                 - dictionary of all possible tokens where key is name of token and value is id int 
             - inv_vocab.pkl 
                 - dictionary of all possible tokens where key is id int and value is name of token 
-        - Notebooks - all notebooks are dependent on only files above
+        - Notebooks - all notebooks are dependent on only files above, parts of code generated using chatgpt such as helper methods weighted_random_choice
             - MaskModel.ipynb
                 - trains for case where MASK is on the decision position and an action needs to be selected 
             - AugmentModel.ipynb 
@@ -47,12 +47,13 @@ There are three main folders in the next_best architecture
             - sell_model.pth
 
     - python_manager
+        - base flask boilercode created by chatgpt
         - python app that connects the OverWolf overlay and the models 
         - to run, activate the venv then run python server.py 
         - single file server.py handles all the routes 
 
     - sample-app-master
-        - javascript app that runs the OverWolf overlay to get real time game data 
+        - javascript app that runs the OverWolf overlay to get real time game data created by OverWolf
         - does not work unless you have a OverWolf Developer account 
         - important files for the app  
             - native\windows\second\second.html 

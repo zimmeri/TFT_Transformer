@@ -572,11 +572,13 @@ augment_dict = {
 
 #need to add something if there is an open hero slot
 
+#route to get a decision token
 @app.route('/decide', methods=['GET'])
 def decide():
     board[decision] = "MASK"
     return jsonify({"data": 'ok'}), 200, {'Content-Type': 'application/json'}
 
+#route to set items 
 @app.route('/items', methods=['POST'])
 def items():
     data = request.get_json()['items']
@@ -586,6 +588,7 @@ def items():
         board[shop_boundary+1+i] = item
     return jsonify({"data": 'ok'}), 200, {'Content-Type': 'application/json'}
 
+#route for action augment where the user specifies the three options
 @app.route('/augments', methods=['POST'])
 def augments():
     data = request.get_json()['augments']
@@ -595,6 +598,7 @@ def augments():
     board[decision + 4] = "MASK"
     return jsonify({"data": 'ok'}), 200, {'Content-Type': 'application/json'}
 
+#route that updates board given Overwolf events
 @app.route('/update', methods=['POST'])
 def update():
     data_json = request.get_json()
@@ -605,7 +609,7 @@ def update():
         return jsonify({"data": '1'}), 200, {'Content-Type': 'application/json'}
     first_key = next(iter(data))
 
-    # Handle based on first key
+    #handle based on first key
     if first_key == 'store':
         shop  = json.loads(data['store']['shop_pieces'])
         for i,slot in enumerate(shop.keys()):
@@ -613,17 +617,16 @@ def update():
                 board[bench_boundary+i+1] = unit_dict[shop[slot]['name']]
             else:
                 board[bench_boundary+i+1] = 'PAD'
-    elif first_key == 'me':
-        # Do something with player state
+    elif first_key == 'me': #me corresponds to amount of gold the user has
         if int(data['me']['gold']) < 2:
             board[reroll] = 'CANT_REROLL'
         else:
             board[reroll] = 'CAN_REROLL'
-    elif first_key == 'bench':
+    elif first_key == 'bench': #bench shows units on bench
         bench = json.loads(data['bench']['bench_pieces'])
         for i,slot in enumerate(bench.keys()):
             board[hero_boundary+i+1] = unit_dict[bench[slot]['name']]
-    elif first_key == 'board':
+    elif first_key == 'board': #board shows units on boarad
         board_data = json.loads(data['board']['board_pieces'])
         for i,slot in enumerate(board_data.keys()):
             board[i*3+1] = unit_dict[board_data[slot]['name']]
